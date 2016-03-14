@@ -1,3 +1,5 @@
+#include <Servo.h>
+
 #include <MeOrion.h>
 #include <EEPROM.h>
 #include <SoftwareSerial.h>
@@ -166,7 +168,7 @@ void prepareMove()
   float dx = tarX - curX;
   float dy = tarY - curY;
   float distance = sqrt(dx*dx+dy*dy);
-  Serial.print("distance=");Serial.println(distance);
+  //Serial.print("distance=");Serial.println(distance);
   if (distance < 0.001)
     return;
   tarA = tarX*STEPS_PER_MM;
@@ -182,11 +184,11 @@ void prepareMove()
 void goHome()
 {
   // stop on either endstop touches
-  while(digitalRead(ylimit_pin2)==1 && digitalRead(ylimit_pin1)==1){
-    stepperMoveB(motorBbk);
+  while(digitalRead(ylimit_pin2)==1 ){//&& digitalRead(ylimit_pin1)==1){
+    stepperMoveB(motorBfw);
     delayMicroseconds(stepdelay_min);
   }
-  while(digitalRead(xlimit_pin2)==1 && digitalRead(xlimit_pin1)==1){
+  while(digitalRead(xlimit_pin2)==1 ){//&& digitalRead(xlimit_pin1)==1){
     stepperMoveA(motorAbk);
     delayMicroseconds(stepdelay_min);
   }
@@ -194,7 +196,7 @@ void goHome()
   posA = 0;
   posB = 0;
   curX = 0;
-  curY = 0;
+  curY = 325;
   tarX = 0;
   tarY = 0;
   tarA = 0;
